@@ -5,12 +5,10 @@ pipeline {
     // parameters {
     //     string(name: 'project_repo', defaultValue: '', description: 'Please enter your project repo')
     // }
-    // environment {
-    //     //AWS_CREDENTIALS = credentials('aws-credentials-id') // Replace with your Jenkins credentials ID
-    //     GIT_REPO = "${params.project_repo}" // Replace with your repo
-    //     //BRANCH = 'main'
-    //     //TERRAFORM_DIR = 'infra' // Path to Terraform scripts
-    // }
+    environment {
+        DOCKER_USER = credentials('docker-hub-username')
+        DOCKER_PASS = credentials('docker-hub-password')
+    }
     stages {
         stage('CloneGitRepo') {
             steps {
@@ -55,10 +53,9 @@ pipeline {
             steps {
                //deploy adapters: [tomcat9(credentialsId: 'fbf87d29-4ab1-4694-bbac-bf551e13aa57', path: '', url: 'http://184.73.39.198:8080/')], contextPath: '/student-prod', onFailure: false, war: '**/*.war'
                 sh 'echo Build Succeed, creating the docker image'
-                sh 'sudo docker image build -t shubhamborkar/studentapp:v1.01 ./'
-                sh 'sudo chmod 666 /var/run/docker.sock'
-                sh 'cat password.txt | docker login --username shubhamborkar --password-stdin'
-                sh 'sudo docker push shubhamborkar/studentapp:v1.01'     
+                sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                sh 'docker build -t shubhamborkar/studentapp:latest .'
+                sh 'docker push shubhamborkar/studentapp:latest'    
             }
         }
     }
