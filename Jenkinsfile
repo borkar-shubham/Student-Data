@@ -4,19 +4,19 @@ pipeline {
     stages {
         stage('CloneGitRepo') {
             steps {
-                git branch: 'main', url: 'https://github.com/borkar-shubham/My_Projects.git'
+                git branch: 'main', url: 'https://github.com/borkar-shubham/Student-Data.git'
                     }
         }
-        stage("Sonar-Scan") {
-            steps {
-                withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
-                sh '''
-                export PATH=$PATH:/opt/sonar-scanner/bin
-                sonar-scanner -Dsonar.login=$SONAR_TOKEN -Dsonar.projectKey=My_Projects -Dsonar.organization=shubham-borkar
-                '''
-                }
-            }  
-        }
+        // stage("Sonar-Scan") {
+        //     steps {
+        //         withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
+        //         sh '''
+        //         export PATH=$PATH:/opt/sonar-scanner/bin
+        //         sonar-scanner -Dsonar.login=$SONAR_TOKEN -Dsonar.projectKey=My_Projects -Dsonar.organization=shubham-borkar
+        //         '''
+        //         }
+        //     }  
+        // }
         stage('MavenCompile') {
             steps {
                 sh 'mvn compile'
@@ -32,7 +32,7 @@ pipeline {
         }
         stage('MavenBuild') {
             steps {
-                git branch: 'main', url: 'https://github.com/borkar-shubham/My_Projects.git'
+                git branch: 'main', url: 'https://github.com/borkar-shubham/Student-Data.git'
                 sh 'mvn package'
                 }
         }
