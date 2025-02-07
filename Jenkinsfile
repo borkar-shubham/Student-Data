@@ -6,10 +6,15 @@ pipeline {
     //     string(name: 'project_repo', defaultValue: '', description: 'Please enter your project repo')
     // }
     environment {
-        DOCKER_USER = credentials('docker-hub-username')
-        DOCKER_PASS = credentials('docker-hub-password')
+        DOCKER_USER = credentials('docker-username')
+        DOCKER_PASS = credentials('docker-password')
     }
-    stages {
+    stages('Installing Dependencies') {
+        stage {
+            steps
+                sh 'chmod +x dependecies.sh'
+                sh './dependecies.sh'
+        }
         stage('CloneGitRepo') {
             steps {
                 git branch: 'main', url: 'https://github.com/borkar-shubham/Student-Data.git'
