@@ -2,19 +2,19 @@ pipeline {
     agent {
         label ('cm-linux')
     }
-    parameters {
-        string(name: 'project_repo', defaultValue: '', description: 'Please enter your project repo')
-    }
-    environment {
-        //AWS_CREDENTIALS = credentials('aws-credentials-id') // Replace with your Jenkins credentials ID
-        GIT_REPO = "${params.project_repo}" // Replace with your repo
-        //BRANCH = 'main'
-        //TERRAFORM_DIR = 'infra' // Path to Terraform scripts
-    }
+    // parameters {
+    //     string(name: 'project_repo', defaultValue: '', description: 'Please enter your project repo')
+    // }
+    // environment {
+    //     //AWS_CREDENTIALS = credentials('aws-credentials-id') // Replace with your Jenkins credentials ID
+    //     GIT_REPO = "${params.project_repo}" // Replace with your repo
+    //     //BRANCH = 'main'
+    //     //TERRAFORM_DIR = 'infra' // Path to Terraform scripts
+    // }
     stages {
         stage('CloneGitRepo') {
             steps {
-                git branch: 'main', url: 'env.GIT_REPO'
+                git branch: 'main', url: 'https://github.com/borkar-shubham/Student-Data.git'
                     }
         }
         // stage("Sonar-Scan") {
