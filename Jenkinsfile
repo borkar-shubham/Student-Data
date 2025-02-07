@@ -1,6 +1,7 @@
 pipeline {
-    agent any
-
+    agent {
+        label ('cm-linux')
+    }
     stages {
         stage('CloneGitRepo') {
             steps {
