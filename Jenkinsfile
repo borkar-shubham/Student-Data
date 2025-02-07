@@ -43,11 +43,10 @@ pipeline {
         stage('MavenBuild') {
             steps {
                 git branch: 'main', url: 'https://github.com/borkar-shubham/Student-Data.git'
-              //sh 'mvn package'
-                echo "Build Completed"
+                sh 'mvn clean package'
                 }
         }
-        stage('DeployToServer') {
+        stage('ImageBuild&Push') {
             when {
               expression {
                 currentBuild.result == null || currentBuild.result == 'SUCCESS' 
@@ -55,7 +54,11 @@ pipeline {
             }
             steps {
                //deploy adapters: [tomcat9(credentialsId: 'fbf87d29-4ab1-4694-bbac-bf551e13aa57', path: '', url: 'http://184.73.39.198:8080/')], contextPath: '/student-prod', onFailure: false, war: '**/*.war'
-                echo "Deployment Success" 
+                sh 'echo Build Succeed, creating the docker image'
+                sh 'sudo docker image build -t shubhamborkar/studentapp:v1.01 ./'
+                sh 'sudo chmod 666 /var/run/docker.sock'
+                sh 'cat password.txt | docker login --username shubhamborkar --password-stdin'
+                sh 'sudo docker push shubhamborkar/studentapp:v1.01'     
             }
         }
     }
