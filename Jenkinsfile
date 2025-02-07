@@ -2,10 +2,16 @@ pipeline {
     agent {
         label ('cm-linux')
     }
+    environment {
+        //AWS_CREDENTIALS = credentials('aws-credentials-id') // Replace with your Jenkins credentials ID
+        GIT_REPO = 'https://github.com/borkar-shubham/Student-Data.git' // Replace with your repo
+        BRANCH = 'main'
+        //TERRAFORM_DIR = 'infra' // Path to Terraform scripts
+    }
     stages {
         stage('CloneGitRepo') {
             steps {
-                git branch: 'main', url: 'https://github.com/borkar-shubham/Student-Data.git'
+                git branch: 'BRANCH', url: 'GIT_REPO'
                     }
         }
         // stage("Sonar-Scan") {
